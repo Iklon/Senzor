@@ -35,7 +35,7 @@ public class Controller {
             data = bufferedreader.readLine();
         } catch (IOException exc) {exc.printStackTrace();}
         //System.out.println(data);
-        data = data.replaceAll("\\   ", ";").replaceAll("\\       ", ";");
+        data = data.replaceAll("( )+", ";");
         System.out.println(data);
         line = data.split(";");
         System.out.println("Soubor nacten");
