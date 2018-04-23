@@ -7,6 +7,7 @@ import javafx.scene.chart.XYChart;
 import javafx.stage.FileChooser;
 
 import java.io.*;
+import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,19 +40,19 @@ public class Controller {
         System.out.println(data);
         line = data.split(";");
         System.out.println("Soubor nacten");
-        compute(5, 1);
+        compute(5, 10);
     }
 
 
     private void compute(int cas, int count) {
-        int multiple, cyklus=0;
+        int cyklus=0;
         float buffer[];
         buffer = new float[180];
 
         for (int b=0; b<count; b++){
             System.out.println("Cyklus b: " + b);
 
-            while(cyklus<=180) {
+            while(cyklus<=179) {
                 System.out.println("Cyklus c: " + cyklus);
                 System.out.println("|"+line[b * 180 + cyklus]+"|");
 
@@ -68,19 +69,22 @@ public class Controller {
                             cyklus++;
                         }
                         else {
+                            BigDecimal cislo = new BigDecimal(line[b * 180 + cyklus]);
                             System.out.println("Normalni cislo");
-                            multiple = Integer.parseInt(line[b * 180 + cyklus].substring(12, 13))+1;
-                            buffer[cyklus] = Float.parseFloat(line[b * 180 + cyklus].substring(0, 9)) * multiple;
-                            System.out.println("Nasobek: " + multiple);
-                            System.out.println("Cislo: " + Float.parseFloat(line[b * 180 + cyklus].substring(0, 9)));
+                            buffer[cyklus] = cislo.floatValue();
                             System.out.println("A jeho vysledek: " + buffer[cyklus]);
                             cyklus++;
                         }
                     }
                 }
             }
+            try {
+                Thread.currentThread().sleep(1000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            draw(buffer);
         }
-        draw(buffer);
     }
 
     private void draw(float data[]) {
