@@ -15,6 +15,7 @@ public class Controller {
     @FXML
     private ScatterChart<Number, Number> chart;
 
+    private String line[];
     private String sep[];
     private FileReader reader;
     private BufferedReader bufferedreader;
@@ -23,56 +24,70 @@ public class Controller {
     @FXML
     private void load() {
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\Programy\\SICK"));
-        File data = chooser.showOpenDialog(null);
+        chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\Programy\\Senzor"));
+        File file = chooser.showOpenDialog(null);
         try {
-            reader = new FileReader(data);
+            reader = new FileReader(file);
             bufferedreader = new BufferedReader(reader);
         } catch (FileNotFoundException exc) {exc.printStackTrace();}
-        String line=null;
+        String data=null;
         try {
-            line = bufferedreader.readLine();
+            data = bufferedreader.readLine();
         } catch (IOException exc) {exc.printStackTrace();}
-        sep = line.split("\\  ");
+        //System.out.println(data);
+        data = data.replaceAll("\\   ", ";").replaceAll("\\       ", ";");
+        System.out.println(data);
+        line = data.split(";");
         System.out.println("Soubor nacten");
-        draw(5, 10);
+        compute(5, 1);
     }
 
 
-    private void draw(int cas, int count) {
-        XYChart.Series series = new XYChart.Series();
-        float buffer[]=null;
-        int multiple=1;
+    private void compute(int cas, int count) {
+        int multiple, cyklus=0;
+        float buffer[];
+        buffer = new float[180];
+
         for (int b=0; b<count; b++){
             System.out.println("Cyklus b: " + b);
-            for (int c=0; c<180; c++) {
-                System.out.println("Cyklus c: " + c);
-                System.out.println("|"+sep[b * 180 + c]+"|");
-                if(sep[b*180+c] != null) {
-                    if (sep[b * 180 + c].compareTo("          Inf") == 1) {
+
+            while(cyklus<=180) {
+                System.out.println("Cyklus c: " + cyklus);
+                System.out.println("|"+line[b * 180 + cyklus]+"|");
+
+                if(line[b*180+cyklus] != "") {
+                    if (line[b * 180 + cyklus].indexOf("Inf")>=0) {
                         System.out.println("Inf");
-                        buffer[c] = 0;
-                    } else {
-                        if (sep[b * 180 + c].compareTo("          NaN") == 1) {
+                        buffer[cyklus] = 0;
+                        cyklus++;
+                    }
+                    else {
+                        if (line[b * 180 + cyklus].indexOf("NaN")>=0) {
                             System.out.println("NaN");
-                            buffer[c] = 0;
-                        } else {
+                            buffer[cyklus] = 0;
+                            cyklus++;
+                        }
+                        else {
                             System.out.println("Normalni cislo");
-                            System.out.println("Nasobek: " + Integer.parseInt(sep[b * 180 + c].substring(12, 13)));
-                            System.out.println("Cislo: " + Float.parseFloat(sep[b * 180 + c].substring(0, 9)));
-                            multiple = Integer.parseInt(sep[b * 180 + c].substring(12, 13))+1;                        //Tady to nějak hapruje
-                            buffer[c] = Float.parseFloat(sep[b * 180 + c].substring(0, 9)) * multiple;              //Tady to nějak hapruje
-                            System.out.println("A jeho vysledek: " + buffer[c]);
+                            multiple = Integer.parseInt(line[b * 180 + cyklus].substring(12, 13))+1;
+                            buffer[cyklus] = Float.parseFloat(line[b * 180 + cyklus].substring(0, 9)) * multiple;
+                            System.out.println("Nasobek: " + multiple);
+                            System.out.println("Cislo: " + Float.parseFloat(line[b * 180 + cyklus].substring(0, 9)));
+                            System.out.println("A jeho vysledek: " + buffer[cyklus]);
+                            cyklus++;
                         }
                     }
                 }
             }
-            for (int a=0; a<180; a++) {
-              series.getData().add(new XYChart.Data(a, buffer[a]));
-            }
         }
-        System.out.println("Vycisteni bufferu");
-        buffer=null;
+        draw(buffer);
+    }
+
+    private void draw(float data[]) {
+        XYChart.Series series = new XYChart.Series();
+        for (int a=0; a<180; a++) {
+            series.getData().add(new XYChart.Data(a, data[a]));
+        }
         chart.getData().add(series);
     }
 }
