@@ -26,7 +26,7 @@ public class Controller {
     @FXML
     private  TextField top;
 
-    private String line[];
+    private String sep[];
     private FileReader reader;
     private BufferedReader bufferedreader;
     private XYChart.Series series = new XYChart.Series();
@@ -34,24 +34,32 @@ public class Controller {
 
     @FXML
     private void load() {
+        String line=null;
+        String buffer[][];
+        buffer = new String[180][];
         FileChooser chooser = new FileChooser();
-        chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\Programy\\Senzor"));
+        chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\SICK"));
         File file = chooser.showOpenDialog(null);
         try {
             reader = new FileReader(file);
             bufferedreader = new BufferedReader(reader);
         } catch (FileNotFoundException exc) {exc.printStackTrace();}
-        String data=null;
         try {
-            data = bufferedreader.readLine();
+            for (int a=0; a<180; a++){
+                line = bufferedreader.readLine();
+                line = line.replaceAll("( )+", ";");
+                sep = line.split(";");
+                for (int b=0; b<sep.length; b++) {
+                    buffer[a][b] = sep[b];
+                }
+            }
         } catch (IOException exc) {exc.printStackTrace();}
-        data = data.replaceAll("( )+", ";");
-        line = data.split(";");
-        compute(5, 1);
+        System.out.println(buffer[0][0]);
+        //compute(5, 10);
     }
 
 
-    private void compute(int cas, int count) {
+ /*   private void compute(int cas, int count) {
         int cyklus=0;
         float buffer[];
         buffer = new float[180];
@@ -94,5 +102,5 @@ public class Controller {
             System.out.println("Cislo: " + data[a] + "   X: " + -cos(Math.toRadians(a))*data[a] + "   Y: " + sin(Math.toRadians(a))*data[a]);
         }
         chart.getData().add(series);
-    }
+    }*/
 }
