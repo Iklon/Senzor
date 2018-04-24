@@ -37,7 +37,7 @@ public class Controller {
         String buffer[][];
         buffer = new String[180][];
         FileChooser chooser = new FileChooser();
-        //chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\SICK"));
+        chooser.setInitialDirectory(new File("D:\\Users\\Iklon\\Desktop\\Staz\\SICK"));
         File file = chooser.showOpenDialog(null);
         try {
             reader = new FileReader(file);
