@@ -12,6 +12,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import static java.lang.StrictMath.cos;
+import static java.lang.StrictMath.sin;
+
+
 public class Controller {
     @FXML
     private ScatterChart<Number, Number> chart;
@@ -35,12 +39,10 @@ public class Controller {
         try {
             data = bufferedreader.readLine();
         } catch (IOException exc) {exc.printStackTrace();}
-        //System.out.println(data);
         data = data.replaceAll("( )+", ";");
-        System.out.println(data);
+        //System.out.println(data);
         line = data.split(";");
-        System.out.println("Soubor nacten");
-        compute(5, 10);
+        compute(5, 1);
     }
 
 
@@ -54,7 +56,6 @@ public class Controller {
 
             while(cyklus<=179) {
                 System.out.println("Cyklus c: " + cyklus);
-                System.out.println("|"+line[b * 180 + cyklus]+"|");
 
                 if(line[b*180+cyklus] != "") {
                     if (line[b * 180 + cyklus].indexOf("Inf")>=0) {
@@ -69,19 +70,13 @@ public class Controller {
                             cyklus++;
                         }
                         else {
-                            BigDecimal cislo = new BigDecimal(line[b * 180 + cyklus]);
                             System.out.println("Normalni cislo");
+                            BigDecimal cislo = new BigDecimal(line[b * 180 + cyklus]);
                             buffer[cyklus] = cislo.floatValue();
-                            System.out.println("A jeho vysledek: " + buffer[cyklus]);
                             cyklus++;
                         }
                     }
                 }
-            }
-            try {
-                Thread.currentThread().sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
             }
             draw(buffer);
         }
@@ -90,7 +85,8 @@ public class Controller {
     private void draw(float data[]) {
         XYChart.Series series = new XYChart.Series();
         for (int a=0; a<180; a++) {
-            series.getData().add(new XYChart.Data(a, data[a]));
+            series.getData().add(new XYChart.Data(-cos(Math.toRadians(a))*data[a],sin(Math.toRadians(a))*data[a]));
+            System.out.println("Cislo: " + data[a] + "   X: " + -cos(Math.toRadians(a))*data[a] + "   Y: " + sin(Math.toRadians(a))*data[a]);
         }
         chart.getData().add(series);
     }
