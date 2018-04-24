@@ -55,7 +55,7 @@ public class Controller {
             }
         }
         chart.getData().add(series);
-        compute(buffer, 5, 1);
+        compute(buffer, 5, 100);
     }
 
 
@@ -64,16 +64,18 @@ public class Controller {
         float vysledek[];
         vysledek = new float[180];
 
-        for (int i=1; i<count+1; i++){
-            final int g = i;
             //System.out.println("Cyklus g: " + g);
             AnimationTimer timer = new AnimationTimer() {
                 int i = 0;
+                int g = 0;
                 @Override
                 public void handle(long now) {
                     i++;
                     if(i > 40) {
                         i = 0;
+                        g++;
+                        if(g >= count)
+                            this.stop();
                         int cyklus = 0;
                         while(cyklus<180) {
                             //System.out.println("Cyklus c: " + cyklus);
@@ -107,7 +109,6 @@ public class Controller {
             timer.start();
 
 
-        }
     }
 
     private void draw(float data[]) {
