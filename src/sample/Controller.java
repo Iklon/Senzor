@@ -21,10 +21,6 @@ import static java.lang.StrictMath.sin;
 public class Controller {
     @FXML
     private ScatterChart<Number, Number> chart;
-    @FXML
-    private TextField bot;
-    @FXML
-    private  TextField top;
 
     private String sep[];
     private FileReader reader;
@@ -44,17 +40,23 @@ public class Controller {
             reader = new FileReader(file);
             bufferedreader = new BufferedReader(reader);
         } catch (FileNotFoundException exc) {exc.printStackTrace();}
-        try {
-            for (int a=0; a<180; a++){
+        for (int a=0; a<180; a++){
+            try {
                 line = bufferedreader.readLine();
-                line = line.replaceAll("( )+", ";");
-                sep = line.split(";");
-                for (int b=0; b<sep.length; b++) {
-                    buffer[a][b] = sep[b];
-                }
+            } catch (IOException exc) {exc.printStackTrace();}
+            line = line.replaceAll("( )+", ";");
+            sep = line.split(";");
+            System.out.println("Řadek číslo: " + a + " má: " + sep.length + " znaků");
+            buffer[a] = new String[sep.length];
+            for (int b=0; b<sep.length; b++) {
+                System.out.println("Cyklus b: " + b);
+                buffer[a][b] = sep[b];
             }
-        } catch (IOException exc) {exc.printStackTrace();}
-        System.out.println(buffer[0][0]);
+        }
+        System.out.println("1" + buffer[0][0]);
+        System.out.println("2" + buffer[0][1]);
+        System.out.println("3" + buffer[1][0]);
+        System.out.println("4" + buffer[1][1]);
         //compute(5, 10);
     }
 
