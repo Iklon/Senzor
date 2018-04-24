@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Date;
 
 import static java.lang.StrictMath.cos;
 import static java.lang.StrictMath.sin;
@@ -44,16 +45,17 @@ public class Controller {
             try {
                 line = bufferedreader.readLine();
             } catch (IOException exc) {exc.printStackTrace();}
-            line = line.replaceAll("( )+", ";");
-            sep = line.split(";");
-            System.out.println("Řadek číslo: " + a + " má: " + sep.length + " znaků");
+            sep = line.split("( )+");
+            //System.out.println("Řadek číslo: " + a + " má: " + sep.length + " znaků");
             buffer[a] = new String[sep.length];
             for (int b=0; b<sep.length; b++) {
                 buffer[a][b] = sep[b]; //proměná b se počítá od 1 namísto od 0...nevim proč
             }
         }
-        compute(buffer, 5, 10);
+        compute(buffer, 5, 1);
     }
+
+
 
     private void compute(String data[][], int cas, int count) {
         int cyklus=0;
@@ -61,25 +63,25 @@ public class Controller {
         vysledek = new float[180];
 
         for (int g=1; g<count+1; g++){
-            System.out.println("Cyklus g: " + g);
+            //System.out.println("Cyklus g: " + g);
 
             while(cyklus<180) {
-                System.out.println("Cyklus c: " + cyklus);
+                //System.out.println("Cyklus c: " + cyklus);
 
                 if(data[cyklus][g] != "") {
                     if (data[cyklus][g].indexOf("Inf")>=0) {
-                        System.out.println("Inf");
+                        //System.out.println("Inf");
                         vysledek[cyklus] = 0;
                         cyklus++;
                     }
                     else {
                         if (data[cyklus][g].indexOf("NaN")>=0) {
-                            System.out.println("NaN");
+                            //System.out.println("NaN");
                             vysledek[cyklus] = 0;
                             cyklus++;
                         }
                         else {
-                            System.out.println("Normalni cislo");
+                            //System.out.println("Normalni cislo");
                             BigDecimal cislo = new BigDecimal(data[cyklus][g]);
                             vysledek[cyklus] = cislo.floatValue();
                             cyklus++;
@@ -95,7 +97,6 @@ public class Controller {
         series.getData().removeAll();
         for (int a=0; a<180; a++) {
             series.getData().add(new XYChart.Data(-cos(Math.toRadians(a))*data[a],sin(Math.toRadians(a))*data[a]));
-            System.out.println("Cislo: " + data[a] + "   X: " + -cos(Math.toRadians(a))*data[a] + "   Y: " + sin(Math.toRadians(a))*data[a]);
         }
         chart.getData().add(series);
     }
