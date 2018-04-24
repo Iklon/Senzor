@@ -4,8 +4,10 @@ import javafx.fxml.FXML;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
+import java.awt.*;
 import java.io.*;
 import java.math.BigDecimal;
 import java.nio.file.Files;
@@ -19,11 +21,15 @@ import static java.lang.StrictMath.sin;
 public class Controller {
     @FXML
     private ScatterChart<Number, Number> chart;
+    @FXML
+    private TextField bot;
+    @FXML
+    private  TextField top;
 
     private String line[];
-    private String sep[];
     private FileReader reader;
     private BufferedReader bufferedreader;
+    private XYChart.Series series = new XYChart.Series();
 
 
     @FXML
@@ -40,7 +46,6 @@ public class Controller {
             data = bufferedreader.readLine();
         } catch (IOException exc) {exc.printStackTrace();}
         data = data.replaceAll("( )+", ";");
-        //System.out.println(data);
         line = data.split(";");
         compute(5, 1);
     }
@@ -83,8 +88,8 @@ public class Controller {
     }
 
     private void draw(float data[]) {
-        XYChart.Series series = new XYChart.Series();
-        for (int a=0; a<180; a++) {
+        series.getData().removeAll();
+        for (int a=Integer.parseInt(bot.getText()); a<Integer.parseInt(top.getText()); a++) {
             series.getData().add(new XYChart.Data(-cos(Math.toRadians(a))*data[a],sin(Math.toRadians(a))*data[a]));
             System.out.println("Cislo: " + data[a] + "   X: " + -cos(Math.toRadians(a))*data[a] + "   Y: " + sin(Math.toRadians(a))*data[a]);
         }
