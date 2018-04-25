@@ -26,10 +26,9 @@ public class CameraData {
             String[] data = rows[i].split("( )+");
             for (int j = 0; j < length; j++) {
                 numbers.get(j).add(getNumber(data[j]));
-                System.out.println("I:" + i + " J:" + j);
+                //System.out.println("I:" + i + " J:" + j);
             }
         }
-        //numbers[i] numbers.get(i); numbers.add(prvek)
     }
 
     public List<XYChart.Data> getXYChartData(int set) {

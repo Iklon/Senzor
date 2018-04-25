@@ -2,8 +2,12 @@ package sample;
 
 import javafx.animation.AnimationTimer;
 import javafx.fxml.FXML;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.ScatterChart;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.CheckBox;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 
@@ -16,9 +20,17 @@ public class Controller {
     @FXML
     private ScatterChart<Number, Number> chart;
     @FXML
-    private TextField bot;
+    private TextField x_bot;
     @FXML
-    private TextField top;
+    private  TextField x_top;
+    @FXML
+    private NumberAxis x_axis;
+    @FXML
+    private CheckBox scale;
+    @FXML
+    private Slider slider;
+    @FXML
+    private Label label;
 
     private CameraData cameraData;
 
@@ -34,21 +46,31 @@ public class Controller {
         try {
             cameraData = readCameraData(file);
             new AnimationTimer() {
-                int couter = 0;
-                int g = 0;
+                int counter = 0, g = 0, delay;
                 @Override
                 public void handle(long now) {
-                    couter++;
-                    if(couter > 2) {
-                        couter = 0;
+                    counter++;
+                    delay = (int)slider.getValue();
+                    label.setText(String.valueOf((int)slider.getValue()));
+                    if(counter > delay) {
+                        counter = 0;
                         g++;
-                        System.out.println(g);
                         draw(g);
-
+                        if(scale.isSelected()) x_axis.setAutoRanging(true);
+                        else {
+                            x_axis.setAutoRanging(false);
+                            if(x_bot.getText() != null) {x_axis.setLowerBound((double)Double.parseDouble(x_bot.getText()));}
+                            else {
+                                x_axis.setLowerBound((double)-20);
+                            }
+                            if(x_top.getText() != null) {x_axis.setUpperBound((double)Double.parseDouble(x_top.getText()));}
+                            else {
+                                x_axis.setUpperBound((double)20);
+                            }
+                        }
                     }
                 }
             }.start();
-
         } catch (IOException ioexc) {
             ioexc.printStackTrace();
         }

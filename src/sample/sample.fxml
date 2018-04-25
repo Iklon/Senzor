@@ -1,30 +1,32 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import javafx.scene.chart.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.chart.ScatterChart?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.Pane?>
 
-<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="751.0" prefWidth="972.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="751.0" prefWidth="972.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="sample.Controller">
    <children>
       <ScatterChart fx:id="chart" animated="false" layoutX="6.0" prefHeight="691.0" prefWidth="960.0">
         <xAxis>
-          <NumberAxis autoRanging="false" lowerBound="-40.0" side="BOTTOM" tickLabelGap="1.0" tickLength="10.0" upperBound="40.0" />
+          <NumberAxis autoRanging="false" lowerBound="-40.0" side="BOTTOM" tickLabelGap="1.0" tickLength="10.0" upperBound="40.0" fx:id="x_axis" />
         </xAxis>
         <yAxis>
-          <NumberAxis side="LEFT" upperBound="50.0" />
+          <NumberAxis prefHeight="634.0" prefWidth="33.0" side="LEFT" tickLabelRotation="90.0" upperBound="50.0" />
         </yAxis>
       </ScatterChart>
       <Button layoutX="456.0" layoutY="706.0" mnemonicParsing="false" onAction="#load" text="Načíst" />
-      <Label layoutX="54.0" layoutY="711.0" text="Počet vzorků" />
-      <Label layoutX="246.0" layoutY="711.0" text="Rychlost" />
-      <TextField fx:id="speed" layoutX="312.0" layoutY="704.0" prefHeight="31.0" prefWidth="70.0" />
-      <TextField fx:id="samples" layoutX="147.0" layoutY="704.0" prefHeight="31.0" prefWidth="70.0" />
+      <Label layoutX="14.0" layoutY="711.0" text="Rychlost" />
+      <Label layoutX="723.0" layoutY="709.0" prefHeight="21.0" prefWidth="49.0" text="X min" />
+      <Label layoutX="851.0" layoutY="709.0" text="X max" />
+      <TextField layoutX="784.0" layoutY="706.0" prefHeight="31.0" prefWidth="56.0" fx:id="x_bot" />
+      <TextField layoutX="902.0" layoutY="704.0" prefHeight="31.0" prefWidth="56.0" fx:id="x_top" />
+      <CheckBox fx:id="scale" layoutX="599.0" layoutY="709.0" mnemonicParsing="false" text="Auto scale" />
+      <Slider fx:id="slider" blockIncrement="1.0" layoutX="80.0" layoutY="713.0" max="25.0" min="1.0" value="5.0" />
+      <Label fx:id="label" layoutX="228.0" layoutY="711.0" text="5" />
    </children>
 </Pane>
